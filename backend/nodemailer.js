@@ -3,7 +3,7 @@ import nodemailer from 'nodemailer';
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 587,
-  secure: false, // false for TLS; true for SSL
+  secure: false, 
   auth: {
     user: 'sidimedbtr@gmail.com',
     pass: '123456789',

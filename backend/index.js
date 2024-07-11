@@ -6,7 +6,7 @@ import path from 'path'; // Provides utilities for working with file and directo
 import { fileURLToPath } from 'url'; // Converts a file URL to a file path
 import ticketRouter from './routes/ticketRoutes.js';
 import userRouter from './routes/userRoute.js';
-import { swaggerUi, swaggerDocs } from '/config/swagger.js';
+import { swaggerUi, swaggerDocs } from '../config/swagger.js';
 
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url); 

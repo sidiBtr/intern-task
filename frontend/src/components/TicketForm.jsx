@@ -22,7 +22,7 @@ export default function TicketForm({ onCreateTicket, user }) {
         createdBy: user._id
       };
 
-      // Call the onCreateTicket function passed from parent component
+      
       await onCreateTicket(newTicket);
 
       // Clear form fields after successful submission

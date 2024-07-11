@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './login.css'; // Import your CSS file for styling
+import './login.css'; 
 import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
@@ -30,11 +30,11 @@ export default function Login() {
 
       // Login successful
       const data = await response.json();
-      localStorage.setItem('token1', data.token1); // Store token in local storage or session storage
+      localStorage.setItem('token1', data.token1); // Store token in local storage 
       alert('Login successful!');
       console.log(data.token1)
-      // Redirect or navigate to another page
-      navigate('/profile'); // Example: Redirect to profile page
+      //  navigate to login page
+      navigate('/profile');
     } catch (error) {
       console.error('Login error:', error);
       alert('Login failed. Please try again.');
