@@ -22,7 +22,7 @@ app.use(express.static(path.join(__dirname, '../frontend/dist'))); // Serve stat
 
 // CORS setup
 app.use(cors({
-    origin:  "*",// "https://intern-task-5z54.onrender.com",
+    origin:   "https://intern-task-5z54.onrender.com",
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type'],
 }));
