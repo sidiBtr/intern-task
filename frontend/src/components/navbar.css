@@ -1,0 +1,40 @@
+
+
+.navbar {
+    background-color: transparent;
+    padding: 2px;
+}
+
+.navbar ul {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    list-style: none;
+    color: white;
+    float: right;
+    list-style: none;
+    text-align: left;
+    margin: 0;
+}
+
+.navbar li {
+    display: inline-block;
+    padding: 10px 9px 10px 9px;
+}
+
+.clear {
+    clear: both;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    padding: 14px 16px;
+}
+
+.navbar a:hover {
+    color: maroon;
+}
