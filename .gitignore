@@ -1,7 +1,6 @@
 # Node.js
 **/node_modules/
-backend/.env
-frontend/.env
+../backend/.env
 
 # Logs
 logs/
