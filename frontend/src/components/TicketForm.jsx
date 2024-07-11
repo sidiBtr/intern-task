@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import './ticketForm.css'
 
-export default function TicketForm({ onCreateTicket }) {
+export default function TicketForm({ onCreateTicket, user }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
@@ -17,6 +18,8 @@ export default function TicketForm({ onCreateTicket }) {
       const newTicket = {
         title,
         description,
+        status: 'open',
+        createdBy: user._id
       };
 
       // Call the onCreateTicket function passed from parent component
@@ -32,18 +35,31 @@ export default function TicketForm({ onCreateTicket }) {
   };
 
   return (
-    <div className="ticket-form">
+<div className="ticket-form">
       <h3>Create New Ticket</h3>
       <form onSubmit={handleSubmit}>
         <label>
           Title:
-          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+            className="form-input"
+          />
         </label>
         <label>
           Description:
-          <textarea value={description} onChange={(e) => setDescription(e.target.value)} required />
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+            className="form-input"
+          />
         </label>
-        <button type="submit">Submit Ticket</button>
+        <button type="submit" className="form-button">
+          Submit Ticket
+        </button>
       </form>
     </div>
   );

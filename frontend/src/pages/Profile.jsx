@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import './profile.css'; // Styling for profile page
-import TicketsList from '../components/TicketsList';
-import TicketActions from '../components/TicketActions';
 import { useParams } from 'react-router-dom';
+import TicketForm from '../components/TicketForm';
+import TicketsList from '../components/TicketsList';
+import './profile.css'; // Styling for profile page
 
 export default function Profile() {
   const [tickets, setTickets] = useState([]);
@@ -13,23 +13,20 @@ export default function Profile() {
     const fetchUserProfile = async () => {
       try {
         const token = localStorage.getItem('token1');
-        const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`,{
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-auth-token': token, // Send token1 in headers
-              },
+        const response = await fetch(`https://intern-task-5z54.onrender.com/api/user/profile/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-auth-token': token,
+          },
         });
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch user profile');
-        }
+        if (!response.ok) throw new Error('Failed to fetch user profile');
 
         const userData = await response.json();
         setUser(userData);
       } catch (error) {
         console.error('Error fetching user profile:', error);
-        // Handle error (redirect, show message, etc.)
       }
     };
 
@@ -37,116 +34,33 @@ export default function Profile() {
   }, [userId]);
 
   useEffect(() => {
-      const fetchTickets = async () => {
-        try {
-          const token = localStorage.getItem('token1');
-          const response = await fetch('http://localhost:3000/api/ticket/lists', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-auth-token': token, // Send token1 in headers
-              },
-          });
+    const fetchTickets = async () => {
+      try {
+        const token = localStorage.getItem('token1');
+        const response = await fetch('https://intern-task-5z54.onrender.com/api/ticket/lists', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-auth-token': token,
+          },
+        });
 
-          if (!response.ok) {
-            throw new Error('Failed to fetch tickets');
-          }
+        if (!response.ok) throw new Error('Failed to fetch tickets');
 
-          const data = await response.json();
-          setTickets(data);
-        } catch (error) {
-          console.error('Error fetching tickets:', error);
-          // Handle error (redirect, show message, etc.)
-        }
-      };
-
-      fetchTickets();
-    
-  }, [user]);
-
-  const handleUpdateStatus = async (ticketId, newStatus) => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:3000/api/ticket/${ticketId}/status`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': token,
-        },
-        body: JSON.stringify({ status: newStatus }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update ticket status');
+        const data = await response.json();
+        setTickets(data);
+      } catch (error) {
+        console.error('Error fetching tickets:', error);
       }
+    };
 
-      const updatedTickets = tickets.map(ticket => (
-        ticket._id === ticketId ? { ...ticket, status: newStatus } : ticket
-      ));
-      setTickets(updatedTickets);
-    } catch (error) {
-      console.error('Error updating ticket status:', error);
-      // Handle error (redirect, show message, etc.)
-    }
-  };
-
-  const handleAssignTicket = async (ticketId, assignedTo) => {
-    try {
-      const token = localStorage.getItem('token1');
-      const response = await fetch(`http://localhost:3000/api/ticket/${ticketId}/assign`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': token,
-        },
-        body: JSON.stringify({ assignedTo }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to assign ticket');
-      }
-
-      const updatedTickets = tickets.map(ticket => (
-        ticket._id === ticketId ? { ...ticket, assignedTo } : ticket
-      ));
-      setTickets(updatedTickets);
-    } catch (error) {
-      console.error('Error assigning ticket:', error);
-      // Handle error (redirect, show message, etc.)
-    }
-  };
-
-  const handleDeleteTicket = async (ticketId) => {
-    try {
-      const token = localStorage.getItem('token1');
-      const response = await fetch(`http://localhost:3000/api/ticket/delete/${ticketId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': token,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to delete ticket');
-      }
-
-      const updatedTickets = tickets.filter(ticket => ticket._id !== ticketId);
-      setTickets(updatedTickets);
-    } catch (error) {
-      console.error('Error deleting ticket:', error);
-      // Handle error (redirect, show message, etc.)
-    }
-  };
-
-  if (!user) {
-    return <div>Loading...</div>; // Optional loading state
-  }
+    fetchTickets();
+  }, []);
 
   const handleCreateTicket = async (newTicket) => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3000/api/ticket/create_ticket', {
+      const token = localStorage.getItem('token1');
+      const response = await fetch('https://intern-task-5z54.onrender.com/api/ticket/create_ticket', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -155,17 +69,57 @@ export default function Profile() {
         body: JSON.stringify(newTicket),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to create ticket');
-      }
+      if (!response.ok) throw new Error('Failed to create ticket');
 
-      // Refresh ticket list after successful creation
-      fetchTickets();
+      const createdTicket = await response.json();
+      setTickets((prevTickets) => [...prevTickets, createdTicket]);
     } catch (error) {
       console.error('Error creating ticket:', error);
     }
   };
 
+  const handleUpdateStatus = async (ticketId, newStatus) => {
+    try {
+      const token = localStorage.getItem('token1');
+      const response = await fetch(`https://intern-task-5z54.onrender.com/api/ticket/${ticketId}/status`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token,
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
+
+      if (!response.ok) throw new Error('Failed to update ticket status');
+
+      setTickets((prevTickets) =>
+        prevTickets.map(ticket => ticket._id === ticketId ? { ...ticket, status: newStatus } : ticket)
+      );
+    } catch (error) {
+      console.error('Error updating ticket status:', error);
+    }
+  };
+
+  const handleDeleteTicket = async (ticketId) => {
+    try {
+      const token = localStorage.getItem('token1');
+      const response = await fetch(`https://intern-task-5z54.onrender.com/api/ticket/delete/${ticketId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token,
+        },
+      });
+
+      if (!response.ok) throw new Error('Failed to delete ticket');
+
+      setTickets((prevTickets) => prevTickets.filter(ticket => ticket._id !== ticketId));
+    } catch (error) {
+      console.error('Error deleting ticket:', error);
+    }
+  };
+
+  if (!user) return <div>Loading...</div>;
 
   return (
     <div className="profile-container">
@@ -176,30 +130,16 @@ export default function Profile() {
         <p><strong>Role:</strong> {user.role}</p>
       </div>
 
-      {user.role === 'admin' && (
-        <div>
-          <h3>All Tickets</h3>
-          <TicketsList tickets={tickets} />
-          <TicketActions
-            onUpdateStatus={handleUpdateStatus}
-            onAssignTicket={handleAssignTicket}
-            onDeleteTicket={handleDeleteTicket}
-          />
-        </div>
-      )}
+      <TicketForm onCreateTicket={handleCreateTicket} user={user} />
 
-      {user.role === 'support_agent' && (
-        <div>
-          <h3>Assigned Tickets</h3>
-          <TicketsList tickets={tickets.filter(ticket => ticket.assignedTo === user._id)} />
-        </div>
-      )}
-
-      {user.role === 'customer' && (
-        <div>
-          <h3>My Tickets</h3>
-          <TicketsList tickets={tickets.filter(ticket => ticket.createdBy === user._id)} />
-        </div>
+      {tickets.length === 0 ? (
+        <p>there are no ticket</p>
+      ) : (
+        <TicketsList
+          tickets={user.role === 'admin' ? tickets : tickets.filter(ticket => ticket.createdBy === user._id)}
+          onDelete={handleDeleteTicket}
+          onUpdateStatus={handleUpdateStatus}
+        />
       )}
     </div>
   );

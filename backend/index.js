@@ -6,12 +6,14 @@ import path from 'path'; // Provides utilities for working with file and directo
 import { fileURLToPath } from 'url'; // Converts a file URL to a file path
 import ticketRouter from './routes/ticketRoutes.js';
 import userRouter from './routes/userRoute.js';
+import { swaggerUi, swaggerDocs } from './config/swagger';
 
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url); 
 const __dirname = path.dirname(__filename); 
 
 const app = express();
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Middleware
 app.use(cors());
@@ -20,7 +22,7 @@ app.use(express.static(path.join(__dirname, '../frontend/dist'))); // Serve stat
 
 // CORS setup
 app.use(cors({
-    origin: "https://intern-task-5z54.onrender.com",
+    origin:  "*",// "https://intern-task-5z54.onrender.com",
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type'],
 }));
